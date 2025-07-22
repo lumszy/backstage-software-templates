@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.app_name }}
+  description: Python app hosted on k8s, named ${{ values.app_name }}
+  annotations:
+    #backstage.io/managed-by-location: url:https://github.com/lumszy/platform-engineering/blob/main/catalog-info.yaml
+    github.com/project-slug: lumszy/${{ values.app_name }}
+    #backstage.io/techdocs-ref: dir:.
+    #backstage.io/ci-link: https://github.com/lumszy/platform-engineering/actions
+spec:
+  type: service
+  owner: team-a
+  lifecycle: experimental
