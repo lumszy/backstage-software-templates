@@ -11,7 +11,7 @@ def info():
         'message': 'Hello World',
         'time': datetime.datetime.now().strftime("%I:%M%p %S on %B %d, %Y"),
         'Hostname': socket.gethostname(),
-        'Message': 'You are doing well.'
+        'Message': 'You are doing well.',
         'env': '${{values.app_env}}',
         'app_name': '${{values.app_name}}',
         }
