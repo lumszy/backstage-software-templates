@@ -41,7 +41,7 @@ jobs:
           #echo ${{env.COMMIT_ID}}
           echo ${{ "${{ needs.ci.outputs.output1 }}" }}
           pip install yq
-          yq -Yi '.image.tag = ${{ "${{ needs.ci.outputs.output1 }}" }}' charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
+          yq -Yi '.image.tag = "${{ "${{ needs.ci.outputs.output1 }}" }}"' charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
       
       - name: commit changes to GITHUB
         uses: EndBug/add-and-commit@v9
