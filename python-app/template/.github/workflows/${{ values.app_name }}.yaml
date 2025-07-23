@@ -63,7 +63,7 @@ jobs:
         run: |
           repo="https://github.com/lumszyOrg/${{ values.app_name }}"
           argocd login argocd-server.argocd --insecure --grpc-web --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
-          argocd repo list | grep -q $repo || argocd repo add $repo --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
+          argocd repo list | grep -q $repo || argocd repo add $repo
       
       - name: Create Argocd App for ${{ values.app_name }}
         shell: bash
