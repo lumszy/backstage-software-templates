@@ -1,5 +1,5 @@
 replicaCount: 1
 image:
-  repository: lumszy/${{ values.app-name }} #python-flask-app
+  repository: lumszy/${{ values.app_name }} #python-flask-app
   pullPolicy: IfNotPresent
   tag: ${{ values.app_name }}-${{ values.app_env }}-latest #"f76381"
