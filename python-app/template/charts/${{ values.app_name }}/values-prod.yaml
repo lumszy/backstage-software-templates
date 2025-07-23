@@ -1,0 +1,12 @@
+replicaCount: 2
+image:
+  repository: lumszy/${{ values.app-name } #python-flask-app
+  pullPolicy: IfNotPresent
+  tag: ${{ values.app_name }}-${{ values.app_env }}-latest #"f76381"
+resources:
+  requests:
+    cpu: 5m
+    memory: 20M
+  limits:
+    cpu: 50m
+    memory: 60M
