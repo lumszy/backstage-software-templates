@@ -57,6 +57,19 @@ jobs:
           curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
           sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
           rm argocd-linux-amd64
+      
+      - name: Connect github repo to Argocd
+        shell: bash 
+        run: |
+          argocd login argocd-server.argocd --insecure --grpc-web --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
+          argocd repo list \
+          | grep -q 'https://github.com/lumszyOrg/${{ values.app_name }}'
+          || argocd repo add https://github.com/lumszyOrg/${{ values.app_name }}
+      
+      - name: Create Argocd App for ${{ values.app_name }}
+        shell: bash
+        run: |
+          argocd app create ${{ values.app_name }} --repo https://github.com/lumszyOrg/${{ values.app_name }}
 
       - name: argocd sync application
         shell: bash
