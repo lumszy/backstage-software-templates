@@ -2,7 +2,7 @@ name: ${{ values.app_name }}-cicd
 on: 
   push:
     branches:
-      - master #main
+      - main
 jobs:
   ci:
     runs-on: self-hosted
