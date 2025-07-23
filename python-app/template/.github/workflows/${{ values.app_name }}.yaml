@@ -61,18 +61,27 @@ jobs:
       - name: Connect github repo to Argocd
         shell: bash 
         run: |
+          repo="https://github.com/lumszyOrg/${{ values.app_name }}"
           argocd login argocd-server.argocd --insecure --grpc-web --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
-          argocd repo list \
-          | grep -q 'https://github.com/lumszyOrg/${{ values.app_name }}'
-          || argocd repo add https://github.com/lumszyOrg/${{ values.app_name }}
+          argocd repo list | grep -q $repo || argocd repo add $repo --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
       
       - name: Create Argocd App for ${{ values.app_name }}
         shell: bash
         run: |
-          argocd app create ${{ values.app_name }} --repo https://github.com/lumszyOrg/${{ values.app_name }}
+          repo="https://github.com/lumszyOrg/${{ values.app_name }}"
+          argocd app get ${{ values.app_name }} || argocd app create ${{ values.app_name }} \
+            --repo $repo \
+            --path charts/${{ values.app_name }} \
+            --dest-namespace ${{ values.app_env }} \
+            --dest-server https://kubernetes.default.svc \
+            --values values-${{ values.app_name }}.yaml \
+            --revision main \
+            --sync-policy auto \
+            --sync-option CreateNamespace=true           
 
       - name: argocd sync application
         shell: bash
         run: |
           argocd login argocd-server.argocd --insecure --grpc-web --username admin --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
           argocd app sync ${{ values.app_name }}
+          argocd app wait ${{ values.app_name }} --timeout 180
